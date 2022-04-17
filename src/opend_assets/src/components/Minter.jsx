@@ -17,8 +17,8 @@ function Minter() {
     const imageByteData = [...new Uint8Array(await image.arrayBuffer())];
     const canId = await opend.Mint(name,imageByteData);
     setDisable(true);
-    const idx = canId.toText();
-    setId(idx);
+    const idz = canId.toText();
+    setId(idz);
   }
 
   if(id===""){
