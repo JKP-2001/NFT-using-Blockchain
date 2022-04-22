@@ -7,13 +7,10 @@ import Item from "./Item";
 import Minter from "./Minter";
 
 function App() {
-  const id = "rrkah-fqaaa-aaaaa-aaaaq-cai";
+  // const id = "rrkah-fqaaa-aaaaa-aaaaq-cai";
   return (
     <div className="App">
       <Header />
-      {/* <img className="bottom-space" src={homeImage} /> */}
-      <Minter />
-      {/* <Item id={id}/> */}
       <Footer />
     </div>
   );

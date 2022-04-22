@@ -1,7 +1,9 @@
 type NFT = 
  service {
    getByte: () -> (vec nat8) query;
+   getID: () -> (principal) query;
    getName: () -> (text) query;
    getOwner: () -> (principal) query;
+   transferOwnerShip: (principal) -> (text);
  };
 service : (text, principal, vec nat8) -> NFT

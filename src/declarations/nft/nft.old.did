@@ -1,5 +1,6 @@
 service : {
   getByte: () -> (vec nat8) query;
+  getID: () -> (principal) query;
   getName: () -> (text) query;
   getOwner: () -> (principal) query;
 }

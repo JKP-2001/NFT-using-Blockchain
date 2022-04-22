@@ -1,3 +1,6 @@
 service : {
   Mint: (text, vec nat8) -> (principal);
+  getAllNFT: (principal) -> (vec principal) query;
+  getOpendId: () -> (principal) query;
+  sellItem: (principal, nat) -> (text);
 }
