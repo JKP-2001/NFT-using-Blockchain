@@ -6,7 +6,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(IDL.Principal)],
         ['query'],
       ),
+    'getListedNFT' : IDL.Func([], [IDL.Vec(IDL.Principal)], []),
     'getOpendId' : IDL.Func([], [IDL.Principal], ['query']),
+    'getOriginalOwner' : IDL.Func([IDL.Principal], [IDL.Principal], ['query']),
+    'getPrice' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
+    'isListed' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
     'sellItem' : IDL.Func([IDL.Principal, IDL.Nat], [IDL.Text], []),
   });
 };

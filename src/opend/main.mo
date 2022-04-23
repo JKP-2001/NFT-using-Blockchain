@@ -2,6 +2,7 @@ import Principal "mo:base/Principal";
 import NFTActorClass "../NFT/nft";
 import HashMap "mo:base/HashMap";
 import List "mo:base/List";
+import Iter "mo:base/Iter";
 
 actor OpenD {
 
@@ -70,7 +71,39 @@ actor OpenD {
         };
     };
 
+    public func getListedNFT(): async [Principal]{
+        let ids = Iter.toArray(salesNFT.keys());
+        return ids;
+    };
+
     public query func getOpendId(): async Principal{
         return Principal.fromActor(OpenD);
-    }
+    };
+
+    public query func getOriginalOwner(id:Principal): async Principal{
+        let idOwner: Listing = switch(salesNFT.get(id)){
+            case null return Principal.fromText("");
+            case (?result) result;
+        };
+        return idOwner.itemOwner;
+    };
+
+
+    public query func isListed(itemsID:Principal): async Bool{
+        switch(salesNFT.get(itemsID)){
+            case null return(false);
+            case (?result) return(true);
+        }
+    };
+
+    public query func getPrice(id:Principal): async Nat{
+        let price:Listing = switch(salesNFT.get(id)){
+            case null return 0;
+            case (?result) result;
+        };
+
+        return price.nftPrice;
+
+    };
 };
+

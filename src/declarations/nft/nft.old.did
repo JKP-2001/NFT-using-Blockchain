@@ -3,4 +3,5 @@ service : {
   getID: () -> (principal) query;
   getName: () -> (text) query;
   getOwner: () -> (principal) query;
+  transferOwnerShip: (principal) -> (text);
 }

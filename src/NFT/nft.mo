@@ -7,6 +7,7 @@ actor class NFT(name:Text, owner:Principal, content:[Nat8] ) = this{
     private let itemName = name;
     private var nftOwner:Principal = owner;
     private let imageByte = content;
+    
 
     public query func getName(): async Text{
         return itemName;
@@ -31,6 +32,5 @@ actor class NFT(name:Text, owner:Principal, content:[Nat8] ) = this{
         }else{
             return("Error");
         }
-    }
-
+    };
 }
