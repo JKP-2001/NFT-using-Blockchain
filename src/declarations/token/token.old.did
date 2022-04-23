@@ -1,0 +1,5 @@
+service : {
+  Balance: (principal) -> (nat) query;
+  sendToken: () -> (text);
+  transferMoney: (principal, nat) -> (text);
+}

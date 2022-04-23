@@ -11,21 +11,80 @@ actor OpenD {
         nftPrice:Nat;
     };
 
+    private type UserMoneyInfo = {
+        moneyavail:Nat;
+        isClaimed:Bool;
+    };
+
     var nftHashMap = HashMap.HashMap<Principal,NFTActorClass.NFT>(1,Principal.equal,Principal.hash);
     var ownerHashMap = HashMap.HashMap<Principal,List.List<Principal>>(1,Principal.equal,Principal.hash);
     var salesNFT = HashMap.HashMap<Principal,Listing>(1,Principal.equal,Principal.hash);
-
+    var moneyAvailable = HashMap.HashMap<Principal,UserMoneyInfo>(1,Principal.equal,Principal.hash);
+    stable var openDMoney = 1000000000;
+    
     public shared(msg) func Mint(name:Text,image:[Nat8]): async Principal{
         
         let owner = msg.caller;
         let newNFT = await NFTActorClass.NFT(name,owner,image);
         let newNFTId = await newNFT.getID();
 
+        var x:UserMoneyInfo = {
+            moneyavail=0;
+            isClaimed = false;
+        };
+
         nftHashMap.put(newNFTId,newNFT);
         addToOwnerMap(owner,newNFTId);
-
+        moneyAvailable.put(owner,x);
+        
         return newNFTId;
     };
+
+    public shared(msg) func freeDang(): async Text{
+        let owner:Principal = msg.caller;
+        openDMoney:=openDMoney-10000;
+
+
+        if(openDMoney < 0){
+            return "Offer Finished";
+        };
+
+        let infoo:UserMoneyInfo = {
+            moneyavail=0;
+            isClaimed = false;
+        };
+        
+
+        let moneycurr:UserMoneyInfo = switch(moneyAvailable.get(owner)){
+            case null{
+                moneyAvailable.put(owner,infoo);
+                infoo
+            };
+            case (?result) result;
+        };
+
+        if(moneycurr.isClaimed){
+            return("Already Claimed");
+        };
+
+        let moneyupdated:Nat = moneycurr.moneyavail + 10000;
+        let info:UserMoneyInfo = {
+            moneyavail=moneyupdated;
+            isClaimed = true;
+        };
+        moneyAvailable.put(owner,info);
+        return "Success";
+    };
+
+    public shared(msg) func checkBalance(): async Nat{
+        let onwer = msg.caller;
+        switch(moneyAvailable.get(onwer)){
+            case null return 0;
+            case (?result) return result.moneyavail;
+        };        
+    };
+
+
 
 
     private func addToOwnerMap(owner:Principal,nftId:Principal){
@@ -71,7 +130,7 @@ actor OpenD {
         };
     };
 
-    public func getListedNFT(): async [Principal]{
+    public query func getListedNFT(): async [Principal]{
         let ids = Iter.toArray(salesNFT.keys());
         return ids;
     };
@@ -105,5 +164,22 @@ actor OpenD {
         return price.nftPrice;
 
     };
+
+    public shared(msg) func claimed(): async Bool{
+        let owner:Principal = msg.caller;
+        switch(moneyAvailable.get(owner)){
+            case null return false;
+            case (?result) return true;
+        };
+    };
+
+    // public shared(msg) func transferNFT(id:Principal): async Nat{
+    //     let seller:Principal = msg.caller;
+    //     let owner = await getOriginalOwner(id);
+    //     let requiredid = await getOpendId();
+    //     if(owner == requiredid){
+            
+    //     }
+    // }
 };
 

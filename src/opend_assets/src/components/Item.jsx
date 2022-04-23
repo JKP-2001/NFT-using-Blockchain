@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { Principal } from "@dfinity/principal";
 import { HttpAgent, Actor } from "@dfinity/agent";
-import { idlFactory } from "../../../declarations/nft"
+import { idlFactory } from "../../../declarations/nft";
+import { idlFactory as tokenIdlFactory } from "../../../declarations/token";
 import Button from "./Button";
 import { opend } from "../../../declarations/opend"
 import CURRENT_USER_ID from "../index";
@@ -67,12 +68,21 @@ function Item(props) {
         setIsListed(" Listed");
       }
       else {        
-        setButton(<Button handelClick={handleSell} text="Buy" />)
+        setButton(<Button handelClick={handleBuy} text="Buy" />)
       }
     }
     else {
       setButton(<Button handelClick={handleSell} text="Sell" />)
     }
+  }
+
+
+  const handleBuy = async ()=>{
+    console.log("Buy Clicked");
+    const tokenActor = await Actor.createActor(tokenIdlFactory,{
+      agent:agent,
+      canisterId:Principal.fromText("rrkah-fqaaa-aaaaa-aaaaq-cai"),
+    })
   }
 
   const handleConfirmSell = async () => {

@@ -6,13 +6,19 @@ import homeImage from "../../assets/home-img.png";
 import Minter from "./Minter";
 import { opend } from "../../../declarations/opend"
 import CURRENT_USER_ID from "../index";
+import MyMoney from "./Mymoney";
+import {Principal} from "@dfinity/principal";
 
 function Header() {
 
   
   const [myGallery, setGallery] = useState();
   const [getListedNft, setListedNft] = useState();
-  const [loader,setLoader] = useState(true);
+
+  
+
+
+  
 
   async function getNFTs(id) {
     const x = await opend.getAllNFT(id);
@@ -23,6 +29,8 @@ function Header() {
 
     console.log(y);
     setListedNft(<Gallery title="NFTs For Sale" nftArray={y} />)
+    
+    
   }
 
   useEffect(() => {
@@ -56,6 +64,11 @@ function Header() {
                 My NFTs
               </button>
             </Link>
+            <Link to="/avail-money">
+              <button className="ButtonBase-root Button-root Button-text header-navButtons-3">
+                Balance
+              </button>
+            </Link>
           </div>
         </header>
       </div>
@@ -74,6 +87,12 @@ function Header() {
           
           {myGallery}
         </Route>
+
+        <Route path="/avail-money">
+          <MyMoney />
+        </Route>
+
+
       </Switch>
     </BrowserRouter>
     </>)
